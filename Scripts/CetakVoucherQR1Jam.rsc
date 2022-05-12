@@ -36,6 +36,6 @@
 
 :log warning ("New Voucher Generated: ftp://" . $FTPServer . $dstpath);
 
-/tool fetch address=$FTPServer src-path=$srcpath user=$FTPUsername mode=ftp password=$FTPPassword dst-path=$dstpath port=21 upload=yes keep-result=no;
+/tool/fetch address=$FTPServer src-path=$srcpath user=$FTPUsername mode=ftp password=$FTPPassword dst-path=$dstpath port=21 upload=yes keep-result=no;
 
-/tool fetch url="https://api.telegram.org/bot$BotID/sendMessage?chat_id=$ChatID&text=Download Voucher: $URL$filename" keep-result=no;
+/tool/fetch url="https://api.telegram.org/bot$BotID/sendMessage?chat_id=$ChatID&text=Download Voucher: $URL$filename" keep-result=no;
