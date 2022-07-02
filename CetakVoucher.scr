@@ -1,0 +1,47 @@
+:local Profile "1 Jam";
+:local PrefixGroup "4h@";
+:local BotID 2103167656:AAEfF6AT9EWK-AinJG******izhle0dh0;
+:local ChatID 1061921822;
+:local FTPServer 103.234.***.***;
+:local FTPUsername "**cfiwm";
+:local FTPPassword "jk*****Mnf228";
+:local FTPPath "/public_html/voucher/";
+:local URL "https://endang.net/voucher/";
+:local Quantity 126;
+:local Length 6;
+:local PasswordLength empty;
+:local Template 4hqr.html;
+:local Expiredin 120d;
+
+
+:global replaceChar do={
+  :for i from=0 to=([:len $1] - 1) do={
+    :local char [:pick $1 $i]
+    :if ($char = $2) do={
+      :set $char $3
+    }
+    :set $output ($output . $char)
+  }
+  :return $output
+}
+
+:local datetime ([/system/clock/get date] . "~" .  [/system/clock/get time]);
+
+:local groupname ($PrefixGroup . [$replaceChar $datetime "/" "-"]);
+:local srcpath ("um5files/PRIVATE/GENERATED/vouchers/gen_" . $Template);
+/user-manager/user/group/add name=$groupname copy-from=0;
+/user-manager/user/add-batch-users profile=$Profile group=$groupname username-length=$Length username-characters=lowercase,numbers,uppercase number-of-users=$Quantity password-length=$PasswordLength;
+
+:local filename ($groupname . ".html");
+:local dstpath ($FTPPath . $filename);
+/user-manager/user/generate-voucher numbers=[find group=$groupname] voucher-template=$Template;
+
+:log warning ("New Voucher Generated: ftp://" . $FTPServer . $dstpath);
+
+/tool/fetch address=$FTPServer src-path=$srcpath user=$FTPUsername mode=ftp password=$FTPPassword dst-path=$dstpath port=21 upload=yes keep-result=no;
+
+/tool/fetch url="https://api.telegram.org/bot$BotID/sendMessage?chat_id=$ChatID&text=Download Voucher: $URL$filename" keep-result=no;
+
+/system/script/add name=$groupname;
+/system/script/set $groupname source="/user-manager/user/remove [find group=$groupname]";
+/system/scheduler/add name=$groupname interval=$Expiredin on-event=$groupname;
