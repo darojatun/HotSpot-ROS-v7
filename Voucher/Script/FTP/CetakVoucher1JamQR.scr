@@ -1,0 +1,56 @@
+:local Profile "1 Jam";
+:local PrefixGroup "1j@";
+:local BotID 2103***************Vdizhle0dh0;
+:local ChatID 1*****22;
+:local FTPServer 192.168.1.10*;
+:local FTPUsername "admin";
+:local FTPPassword [:convert from=base64 "R2FudGk=" ] ;
+:local FTPPath "/um5files/PRIVATE/";
+:local URL "http://$FTPServer/um/PRIVATE/";
+:local Quantity 504;
+:local Length 4;
+:local Prefix "1";
+:local Combine "lowercase,numbers";
+:local PasswordLength empty;
+:local Template 1jqr.html;
+:local Expiredin 90d;
+
+
+:global replaceChar do={
+  :for i from=0 to=([:len $1] - 1) do={
+    :local char [:pick $1 $i]
+    :if ($char = $2) do={
+      :set $char $3
+    }
+    :set $output ($output . $char)
+  }
+  :return $output
+}
+
+:local datetime ([/system/clock/get date] . "~" .  [/system/clock/get time]);
+
+:local groupname ($PrefixGroup . [$replaceChar $datetime "/" "-"]);
+:local srcpath ("um5files/PRIVATE/GENERATED/vouchers/gen_" . $Template);
+/user-manager/user/group/add name=$groupname copy-from=0;
+/user-manager/user/add-batch-users profile=$Profile group=$groupname username-length=$Length username-characters=$Combine number-of-users=$Quantity password-length=$PasswordLength username-prefix=$Prefix;
+
+:local filename ($groupname . ".html");
+:local dstpath ($FTPPath . $filename);
+/user-manager/user/generate-voucher numbers=[find group=$groupname] voucher-template=$Template;
+
+:local localpath [:pick $dstpath  1 100];
+
+/system/script/add name=$groupname source=\
+"/user-manager/user/remove [find group=$groupname];\n\
+/user-manager/user/group/remove [find name=$groupname];\n\
+/system/script/remove [find name=$groupname];\n\
+/system/scheduler/remove [find name=$groupname];\n\
+/file/remove $localpath;";
+
+/system/scheduler/add name=$groupname interval=$Expiredin on-event=$groupname;
+
+:log warning ("New Voucher Generated: ftp://" . $FTPServer . $dstpath);
+/tool/fetch address=$FTPServer src-path=$srcpath user=$FTPUsername mode=ftp password=$FTPPassword dst-path=$dstpath port=21 upload=yes keep-result=no;
+
+:global thisbox [/system/identity/get name];
+/tool/fetch url="https://api.telegram.org/bot$BotID/sendMessage?chat_id=$ChatID&parse_mode=Markdown&text=Voucher *$thisbox*: $URL$filename" keep-result=no;
