@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Vouchers 4 Jam xXx.WiFi - Cetak dengan A4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@700;900&display=swap" rel="stylesheet">
+<style>
+@page print {
+  .noprint {
+    display: none;
+  }
+  .pagebreak {
+    page-break-after: blank;
+  }
+  .titlepage {
+    page: blank;
+  }
+    size: 21.5cm 29.7cm;
+    margin: 6mm 6mm 6mm 6mm;
+     /* Ukuran untuk kertas A4 */
+}
+body
+{
+   padding: 0px;
+   margin:0;
+   min-width: 855px;
+   font-size: 17px;
+   font-family: Consolas, 'Inconsolata', monospace;
+   line-height: 99%;   
+}
+table
+{
+   border-collapse: collapse;
+   margin-left: 4px;
+   display: inline-block; 
+   border-style: initial;
+   width: 273px; 
+   height:34px;
+
+}
+td
+{
+   padding: 6px;
+   vertical-align: center;
+   border: solid 1px #ff0000;
+}
+
+</style>
+</head>
+<body>
+
+    $(DYNAMIC_START)
+<table>
+<tbody>
+<tr>
+<td style="width: 85px; text-align: right;">$(username)</td>
+<td style="width: 180px; text-align: center;">4 Jam: <b style="letter-spacing: 2px;">$(username)</b></td>
+</tr>
+</tbody>
+</table>
+    $(DYNAMIC_END)
+
+</body>
+</html>
