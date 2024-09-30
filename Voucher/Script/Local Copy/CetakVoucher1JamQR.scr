@@ -1,0 +1,36 @@
+:local Profile "1 Jam";
+:local PrefixGroup "1j@";
+:local BotID 210316*************dizhle0dh0;
+:local ChatID 10*****22;
+:local Quantity 1008;
+:local Length 4;
+:local Prefix "1";
+:local Combine "lowercase,numbers";
+:local PasswordLength empty;
+:local Template 1jqr.html;
+:local Expiredin 90d;
+
+:local datetime ([/system/clock/get date] . "~" .  [/system/clock/get time]);
+:local ip [/ip/address/get number=0 address];
+:set ip [:pick $ip 0 [:find $ip "/"]];
+
+:local URL ("http://" . $ip ."/um/PRIVATE/GENERATED/vouchers/gen_" . $Template);
+:local groupname ("$PrefixGroup$datetime");
+:local srcpath ("um5files/PRIVATE/GENERATED/vouchers/gen_" . $Template);
+/user-manager/user/group/add name=$groupname copy-from=0;
+/user-manager/user/add-batch-users profile=$Profile group=$groupname username-length=$Length username-characters=$Combine number-of-users=$Quantity password-length=$PasswordLength username-prefix=$Prefix;
+
+/user-manager/user/generate-voucher numbers=[find group=$groupname] voucher-template=$Template;
+
+/system/script/add name=$groupname source=\
+"/user-manager/user/remove [find group=$groupname];\n\
+/user-manager/user/group/remove [find name=$groupname];\n\
+/system/script/remove [find name=$groupname];\n\
+/system/scheduler/remove [find name=$groupname];";
+
+/system/scheduler/add name=$groupname interval=$Expiredin on-event=$groupname;
+
+:log warning ("New Voucher Generated: $URL");
+
+:global thisbox [/system/identity/get name];
+/tool/fetch url="https://api.telegram.org/bot$BotID/sendMessage?chat_id=$ChatID&text=Voucher $thisbox: $URL" keep-result=no;
