@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="expires" content="-1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HotSpot - Log in</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- two other colors
+
+<body class="lite">
+<body class="dark">
+
+-->
+
+    $(if chap-id)
+    <form name="sendin" action="$(link-login-only)" method="post" style="display:none">
+        <input type="hidden" name="username" />
+        <input type="hidden" name="password" />
+        <input type="hidden" name="dst" value="$(link-orig)" />
+        <input type="hidden" name="popup" value="true" />
+    </form>
+
+    <script src="/md5.js"></script>
+    <script>
+        function doLogin() {
+            document.sendin.username.value = document.login.username.value;
+            document.sendin.password.value = hexMD5('$(chap-id)' + document.login.password.value + '$(chap-challenge)');
+            document.sendin.submit();
+            return false;
+        }
+
+    </script>
+    $(endif)
+	    <div class="ie-fixMinHeight">
+        <div class="main">
+            <div class="wrap animated fadeIn">
+		                <form name="login" action="$(link-login-only)" method="post" $(if chap-id) onSubmit="return doLogin()" $(endif)>
+                    <input type="hidden" name="dst" value="$(link-orig)" />
+                    <input type="hidden" name="popup" value="true" />
+					$(if trial == 'yes')<a href="$(link-login-only)?dst=$(link-orig-esc)&amp;username=T-$(mac-esc)">$(endif)
+                    <img src="img/login-logo.png" alt="Klik untuk internet" width="280" class="logo">
+$(if trial == 'yes')</a>$(endif)
+				<p class="info $(if error)alert$(endif)">
+
+                    </p>
+                    <label>
+                        <img class="ico" src="img/password.svg" alt="#" />
+                        <input name="username" type="text" maxlength="25" autocomplete="off" placeholder="$(if error == "")$(if trial == 'yes')Coba Gratis, klik logo!$(endif)
+                        $(endif)$(if error == "")$(if trial == 'no')Voucher!$(endif)$(endif)$(if error)$(error)$(endif)" />
+                    </label>
+
+                    <input type="submit" value="Connect" />
+
+                </form>
+
+                <p class="info bt"><b>HotSpot WiFi</b><br />Menyediakan Voucher WiFi:<br />4 Jam dan 24 Jam</p>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
