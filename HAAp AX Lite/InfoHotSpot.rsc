@@ -4,8 +4,12 @@
 :global ChatID;
 :global thisbox;
 
-:local temperature [/system/health/get number=0 value]
-:local temp ($temperature . "%E2%84%83");
+#:local volt [/system/health/get number=1 value]
+#set volt ($volt . "V");
+
+
+:local temp [/system/health/get number=0 value]
+set temp ($temperature . "%E2%84%83");
 
 :local totalUser [/ip hotspot active print count-only];
 
