@@ -7,7 +7,7 @@
 :global ip;
 
 :local Profile "24Jam";
-:local PrefixGroup "1h@";
+:local PrefixGroup "24@";
 :local Quantity 1008;
 :local Length 4;
 :local Prefix "2";
