@@ -6,7 +6,7 @@
 :global thisbox;
 :global ip;
 
-:local Profile "24 Jam";
+:local Profile "24Jam";
 :local PrefixGroup "1h@";
 :local Quantity 1008;
 :local Length 4;
