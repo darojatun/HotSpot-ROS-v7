@@ -129,9 +129,9 @@ add interval=2h name=RandomPassword on-event=RandomPassword policy=\
 /system script
 add dont-require-permissions=no name=GlobalConfig owner=admin policy=\
     ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon source=":\
-    global BotID 2103167656:AAEfF6AT9EWK-AinJGoZVJwbVdizhle0dh0;\r\
-    \n:global ChatID 1061921822;\r\
-    \n:global GroupID -100000000;\r\
+    global BotID 21031*************************le0dh0;\r\
+    \n:global ChatID 10*******822;\r\
+    \n:global GroupID -1*******00;\r\
     \n:global thisbox [/system/identity/get name];\r\
     \n\r\
     \n:global ip [/ip/address/get number=2 address];\r\
@@ -341,3 +341,4 @@ add limitation="4 Jam" profile="4 Jam"
 add limitation=24Jam profile=24Jam
 /user-manager router
 add address=192.168.10.10 name=HotSpot
+
